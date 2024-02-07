@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <div class="flex justify-center mt-11">
+        <div>
+            <div th:each="review : ${reviews}" class="mb-8 max-w-2xl px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-light text-gray-600 dark:text-gray-400" th:text="${review.date}"></span>
+                    <div th:if="${#authorization.expression('hasRole(''ROLE_MODERATOR'')')}">
+                        <form th:action="@{'/reviews/moderator/' + ${review.id} + '/claim'}" method="post">
+                            <button type="submit" class="bg-red-500 px-3 py-1 text-sm font-bold text-white-100 transition-colors duration-300 transform rounded cursor-pointer">Claim</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <a href="#" class="text-xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline" tabindex="0" role="link" th:text="${review.title}"></a>
+                    <p class="mt-2 text-gray-600 dark:text-gray-300" th:text="${review.message}"></p>
+                </div>
+                <div class="flex items-center justify-between mt-4">
+                    <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline" tabindex="0" role="link" th:text="${review.reaction}"></a>
+                    <div class="flex items-center">
+                        <img class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=40&q=80" alt="avatar">
+                        <a class="font-bold text-gray-700 cursor-pointer dark:text-gray-200" tabindex="0" role="link" th:text="${review.user.username}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+        <a th:href="@{/reviews/create}" class="fixed bottom-3 right-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+            Add
+        </a>
+    </div>
+</body>
+</html>
