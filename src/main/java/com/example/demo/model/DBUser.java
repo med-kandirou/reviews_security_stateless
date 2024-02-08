@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Setter;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -18,23 +19,24 @@ public class DBUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String username;
+    private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-//    @Override
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return password;
-//    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(role.name() ));
     }
 
     @Override

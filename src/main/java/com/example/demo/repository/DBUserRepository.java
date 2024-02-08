@@ -7,5 +7,5 @@ import java.util.Optional;
 
 
 public interface DBUserRepository extends JpaRepository<DBUser, Long> {
-     Optional<DBUser>  findByUsername(String username);
+     Optional<DBUser> findByEmail(String email);
 }
