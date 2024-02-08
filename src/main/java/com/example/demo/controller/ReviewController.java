@@ -12,12 +12,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
-
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
