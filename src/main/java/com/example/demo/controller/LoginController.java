@@ -25,20 +25,6 @@ public class LoginController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/")
-    public String redirectToReviews(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-        if(isAdmin){
-            List<Review> reviews = reviewService.reviewsReported();
-            model.addAttribute("reviews", reviews);
-            return "dashboard";
-        }
-        else{
-            return "allReviews";
-        }
-    }
 
     @GetMapping("/login")
     public String login() {

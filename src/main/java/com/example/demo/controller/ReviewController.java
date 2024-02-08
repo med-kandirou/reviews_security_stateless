@@ -22,48 +22,28 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/create")
-    public String showCreateReviewForm(Model model) {
-        model.addAttribute("review", new Review());
-        return "createReview";
-    }
-
-    @GetMapping("{idReview}/update")
-    public String showUpdateReviewForm(@PathVariable UUID idReview, Model model) {
-        model.addAttribute("review", reviewService.getReviewById(idReview));
-        return "updateReview";
-    }
 
     @PostMapping("/create")
-    public String createReview(@ModelAttribute Review review) {
+    public String createReview(@RequestBody Review review) {
         reviewService.saveReview(review);
         return "redirect:/reviews";
     }
 
 
     @GetMapping("/{id}")
-    public String showReviewDetails(@PathVariable UUID id, Model model) {
-        Review review = reviewService.getReviewById(id);
-        if (review != null) {
-            model.addAttribute("review", review);
-            return "reviewDetails";
-        } else {
-            return "notFound";
-        }
+    public Review showReviewDetails(@PathVariable UUID id) {
+        return reviewService.getReviewById(id);
     }
 
     @GetMapping
-    public String showAllReviews(Model model) {
-        List<Review> reviews = reviewService.getAllReviews();
-        model.addAttribute("reviews", reviews);
-        return "allReviews";
+    public List<Review> showAllReviews() {
+        return reviewService.getAllReviews();
     }
 
 
     @PostMapping("/moderator/{idReview}/claim")
-    public String claimReview(@PathVariable UUID idReview) {
-        reviewService.claimReview(idReview);
-        return "redirect:/reviews";
+    public Review claimReview(@PathVariable UUID idReview) {
+        return reviewService.claimReview(idReview);
     }
 
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,20 +21,17 @@ public class AdminController {
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteReview(@PathVariable UUID id) {
+    public void deleteReview(@PathVariable UUID id) {
         reviewService.deleteReview(id);
-        return "redirect:/";
     }
 
     @PostMapping("/update")
-    public String updateReview(@ModelAttribute Review review) {
-        reviewService.updateReview(review);
-        return "redirect:/";
+    public Review updateReview(@RequestBody Review review) {
+        return reviewService.updateReview(review);
     }
 
     @GetMapping("/reviewsReported")
-    public String reviewsReported(Model model) {
-        model.addAttribute("reviews",reviewService.reviewsReported());
-        return "redirect:/";
+    public List<Review> reviewsReported() {
+        return reviewService.reviewsReported();
     }
 }
