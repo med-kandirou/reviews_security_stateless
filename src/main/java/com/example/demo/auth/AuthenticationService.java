@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +45,11 @@ public class AuthenticationService {
     );
     DBUser user=repository.findByEmail(request.getEmail())
             .orElseThrow(()-> new UsernameNotFoundException("User not found"));
-    String jwt=jwtService.generateToken(user);
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("password", user.getPassword());
+    claims.put("role", user.getRole().name());
+
+    String jwt=jwtService.generateToken(claims,user);
     return AuthenticationResponse.builder().Token(jwt).build();
   }
 
