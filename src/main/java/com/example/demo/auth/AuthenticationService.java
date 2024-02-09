@@ -33,7 +33,7 @@ public class AuthenticationService {
     return AuthenticationResponse.builder().Token(jwt).build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthenticationResponse login(AuthenticationRequest request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getEmail(),
