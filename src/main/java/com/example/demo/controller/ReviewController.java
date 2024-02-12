@@ -3,7 +3,9 @@ package com.example.demo.controller;
 
 import com.example.demo.Services.ReviewService;
 import com.example.demo.model.Review;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/reviews")
+
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -36,6 +39,7 @@ public class ReviewController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public List<Review> showAllReviews() {
         return reviewService.getAllReviews();
     }
